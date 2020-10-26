@@ -2,8 +2,8 @@
 - name: This sets up an httpd webserver
   hosts: localhost
   tasks:
-  - name: Install apache packages 
+  - name: Install git packages 
     yum:
       name: git
       state: present
-# this is comment
+
