@@ -25,7 +25,7 @@ json_body =[{'measurement': 'linux_discovery',
                   'Kernel_Version': '4.18.0-193.28.1.el8_2.x86_64', 
                   'Total_Processor': '4', 
                   'RUNNING_SERVICE_INFO': '' 
-                  'TOTAL_RUNNING_SERVICE_INFO': '0, 
+                  'TOTAL_RUNNING_SERVICE_INFO': '0', 
                   'ACTIVE_USER_INFO': ''
              }
             }
