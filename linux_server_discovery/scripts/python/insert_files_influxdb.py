@@ -15,6 +15,7 @@ with open(fileName) as f:
 print("################################################################################")
 print(type(d))
 print(d)
+'''
 json_body =[{'measurement': 'linux_discovery', 
              'tags': {'host': 'Azure', 'region': 'us-eat'},
              'time': '2019-11-10T23:00:00Z', 
@@ -31,19 +32,18 @@ json_body =[{'measurement': 'linux_discovery',
             }
            ]
 '''
-[
+json_body = [
     {
         "measurement": "linux_discovery",
         "tags": {
             "host": "Azure",
             "region": "us-east"
         },
-        "time": "2011-11-10T23:00:00Z",
         "fields": d
     }
 ]
 
-'''
+
 print("################################################################################")
 print(json_body)
 client.write_points(json_body)
