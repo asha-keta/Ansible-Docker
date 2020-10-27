@@ -20,7 +20,7 @@ json_body = [
         "measurement": "linux_discovery",
         "tags": {
             "host": "Azure",
-            "region": "us-eat"
+            "region": "us-east"
         },
         "time": "2011-11-10T23:00:00Z",
         "fields": d
