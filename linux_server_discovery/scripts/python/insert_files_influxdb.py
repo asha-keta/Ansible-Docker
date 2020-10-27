@@ -10,9 +10,9 @@ client = InfluxDBClient(host='13.90.149.147', port=8086, username='grafana', pas
 client.switch_database('pyexample1')
 fileName = sys.argv[1]
 with open(fileName) as f:
-     d=json.load(f)
+     d=f.read()
 #d= json.dumps(d)
-d=d.replace("'",""")
+#d=d.replace("'",""")
 print("################################################################################")
 print(type(d))
 print(d)
