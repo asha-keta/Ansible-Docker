@@ -2,6 +2,7 @@ from influxdb import InfluxDBClient
 import pandas as pd
 from pandas import DataFrame
 import json
+import sys
 
 client = InfluxDBClient(host='13.90.149.147', port=8086, username='grafana', password='grafana@123')
 client.create_database('pyexample1')
