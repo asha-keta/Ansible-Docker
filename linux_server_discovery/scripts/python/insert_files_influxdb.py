@@ -19,7 +19,7 @@ fileName = sys.argv[1]
 
 with open(fileName) as f:
      d=json.load(f)
-d= json.dumps(filedata)
+d= json.dumps(d)
 print("################################################################################")
 print(type(d))
 print(d)
