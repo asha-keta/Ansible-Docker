@@ -122,19 +122,7 @@
   register: user_out
 - debug: var=user_out
   when: conn_out is success
- 
-- name: get rpm package installed
-  shell: rpm -qa --last
-  register: rpm_out
-- debug: var=rpm_out
-  when: conn_out is success
- 
-- name: get all rpm package installed
-  shell: rpm -qa
-  register: rpmall_out
-- debug: var=rpmall_out
-  when: conn_out is success
- 
+  
 - name: template conversion
   template:
     src: jsontemp.j2
