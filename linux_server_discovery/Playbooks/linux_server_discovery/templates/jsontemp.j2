@@ -7,9 +7,6 @@
 "CPU_Processor_Speed": {{proc_out.stdout_lines | to_nice_json }},
 "CPU_Cache_Size": {{cache_out.stdout_lines | to_nice_json }},
 "Memory_RAM_Info": {{mem_out.stdout_lines | to_nice_json }},
-"IP_INFO": {{if_out.stdout_lines | to_nice_json }},
-"ROUTE_TABLE_INFO": {{route_out.stdout_lines | to_nice_json }},
-"MOUNT_POINT_INFO": {{fstab_out.stdout_lines | to_nice_json }},
 "MOUNT_POINT_TYPE": {{type_out.stdout_lines | to_nice_json }},
 "BLOCK_DEVICES": {{dev_out.stdout_lines | to_nice_json }},
 "DISK_PARTATION_INFO": {{disk_out.stdout_lines | to_nice_json }},
@@ -19,7 +16,5 @@
 "GRUB_INFO": {{grub_out.stdout_lines | to_nice_json }},
 "BOOT_INFO": {{boot_out.stdout_lines | to_nice_json }},
 "ACTIVE_USER_INFO": {{user_out.stdout_lines | to_nice_json }},
-"PACKAGE_UPDATES": {{server_out.stdout_lines | to_nice_json }},
 "Recently_Installed_RPM_Packages": {{rpm_out.stdout_lines | to_nice_json }},
-"List_Installed_RPM_Packages" : {{rpmall_out.stdout_lines | to_nice_json }},
-"ORACLE_DB_INSTANCES":{{sh_out.stdout_lines | to_nice_json }}}
+"List_Installed_RPM_Packages" : {{rpmall_out.stdout_lines | to_nice_json }}}
