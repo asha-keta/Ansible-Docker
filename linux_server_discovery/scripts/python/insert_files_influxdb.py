@@ -20,8 +20,8 @@ fileName = sys.argv[1]
 with open(fileName) as f:
      d=json.load(f)
 #d= json.dumps(filedata)
-#print(type(d))
-#print(d)
+print(type(d))
+print(d)
 json_body = [
     {
         "measurement": "linux_discovery",
@@ -35,7 +35,8 @@ json_body = [
 ]
 
 
-
+print("################################################################################")
+print(json_body)
 client.write_points(json_body)
 #client.query("insert html_table,data="+filedata+",time=123")
 results = client.query('SELECT * FROM "linux_discovery"')
