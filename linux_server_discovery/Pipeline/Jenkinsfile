@@ -1,0 +1,22 @@
+pipeline {
+       agent any
+	   stages {
+	   stage('Linux source server discovery') {
+	      steps {
+		         dir("/var/lib/jenkins/workspace/${JOB_NAME}/linux_server_discovery/scripts/shell/") {
+				 sh "sudo sh linux_discovery.sh ${currentBuild.number}"
+		         }
+	            }
+		}		
+	}	
+  post {
+        always {
+               dir("/var/lib/jenkins/workspace/linux_server_discovery/linux_server_discovery/scripts/python/"){
+                sh "sudo /bin/python3 generateHtmlReport.py /root/migrationpod/configuration/linux_server_discovery.yml"
+                }
+                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: "/var/lib/jenkins/workspace/${JOB_NAME}/linux_server_discovery/reports", reportFiles: "*.html", reportName: 'Linux Discovery Reports', reportTitles: ''])
+            
+                }
+        }
+	
+}

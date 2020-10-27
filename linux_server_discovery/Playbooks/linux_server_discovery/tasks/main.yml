@@ -1,0 +1,194 @@
+- setup:
+    gather_subset: '!all'
+  register: facts
+- debug: var=facts
+  ignore_errors: yes
+
+- wait_for_connection:
+    timeout: 10
+  ignore_errors: yes
+  register: conn_out 
+
+- name: get hostname
+  shell: hostname
+  register: server_hostname
+- debug: var=server_hostname
+
+- name: get Ip address
+  shell: hostname -I | awk '{print $1}'
+  register: ip_address
+- debug: var=ip_address
+
+- name: get os info
+  shell: cat /etc/system-release-cpe | cut -d ':' -f 5,3
+  register: osrelease
+- debug: var=osrelease
+  when: conn_out is success
+ 
+- name: get system info
+  shell: uname -r
+  register: uname_out
+- debug: var=uname_out
+  when: conn_out is success
+  
+- name: get cpu info
+  shell: grep -c 'processor' /proc/cpuinfo
+  register: cpu_out
+- debug: var=cpu_out
+  when: conn_out is success
+ 
+- name: get model name
+  shell: awk -F':' '/^model name/ { print $2 }' /proc/cpuinfo
+  register: model_out
+- debug: var=model_out
+  when: conn_out is success
+    
+- name: get cpu
+  shell: awk -F':' '/^cpu MHz/ { print $2 }' /proc/cpuinfo
+  register: proc_out
+- debug: var=proc_out
+  when: conn_out is success
+  
+- name: get size
+  shell: awk -F':' '/^cache size/ { print $2 }' /proc/cpuinfo
+  register: cache_out
+- debug: var=cache_out
+  when: conn_out is success 
+
+- name: get memory
+  shell: free -mht
+  register: mem_out
+- debug: var=mem_out
+  when: conn_out is success
+   
+- name: Ifconfig output
+  command: /usr/sbin/ifconfig -a
+  register: if_out
+- debug: var=if_out
+  when: conn_out is success
+ 
+- name: route output
+  command: /usr/sbin/route -n
+  register: route_out
+- debug: var=route_out
+  when: route_out is success
+ 
+- name: get mount point info
+  shell: cat /etc/fstab|grep -v "#"
+  register: fstab_out
+- debug: var=fstab_out
+  when: conn_out is success
+ 
+- name: get mount point type
+  shell: df -Th | grep "^/dev"
+  register: type_out
+- debug: var=type_out
+  when: conn_out is success
+   
+- name: get block devices
+  shell: lsblk -f
+  register: dev_out
+- debug: var=dev_out
+  when: conn_out is success
+  
+- name: get disk partation info
+  shell: df -h
+  register: disk_out
+- debug: var=disk_out
+  when: conn_out is success
+ 
+- name: get paration info
+  shell: mount | grep "^/dev"
+  register: part_out
+- debug: var=part_out
+  when: conn_out is success
+ 
+#- name: pvs output
+#  shell: pvs
+#  register: pvs_out
+# - debug: var=pvs_out
+ #  when: pvs_out is success
+
+  
+#- name: vgs output
+ # shell: vgs 
+ # register: vgs_out
+#- debug: var=vgs_out
+ # when: vgs_out is success
+
+  
+#- name: lvs output
+ # shell: lvs 
+  #register: lvs_out
+#- debug: var=lvs_out
+ # when: lvs_out is success
+ 
+- name: get running service info
+  shell: systemctl list-units | grep running|sort
+  register: list_out
+- debug: var=list_out
+  when: conn_out is success
+  
+- name: get total running services
+  shell: systemctl list-units | grep running|sort| wc -l
+  register: ser_out
+- debug: var=ser_out
+  when: conn_out is success
+ 
+- name: get grub info
+  shell: cat /etc/default/grub
+  register: grub_out
+- debug: var=grub_out
+  when: conn_out is success
+ 
+- name: get boot info
+  shell: ls -l /boot|grep -v total
+  register: boot_out
+- debug: var=boot_out
+  when: conn_out is success
+
+- name: get active user info
+  shell: w | cut -d ' ' -f 1 | grep -v USER | sort -u
+  register: user_out
+- debug: var=user_out
+  when: conn_out is success
+ 
+- name: Transfer executable script script
+  copy: src=../scripts/shell/server.sh dest=/tmp/server.sh mode=0777
+
+- name: Execute the script
+  command: sh /tmp/server.sh
+  register: server_out
+- debug: var=server_out
+  when: conn_out is success
+  
+- name: get rpm package installed
+  shell: rpm -qa --last
+  register: rpm_out
+- debug: var=rpm_out
+  when: conn_out is success
+ 
+- name: get all rpm package installed
+  shell: rpm -qa
+  register: rpmall_out
+- debug: var=rpmall_out
+  when: conn_out is success
+ 
+- name: transfer oracle db instances info script 
+  copy: src=../scripts/shell/oracle.sh dest=/tmp/oracle.sh mode=0777
+
+- name: Execute the oracle script
+  command: sh /tmp/oracle.sh
+  register: sh_out
+- debug: var=sh_out
+  when: conn_out is success
+  
+- name: template conversion
+  template:
+    src: jsontemp.j2
+    dest: "../reports/linux_server_discovery.json"
+
+- name: Store the output to influxdb
+  become: yes
+  become_method: sudo
+  shell: python3 ../scripts/python/insert_files_influxdb.py ../reports/linux_server_discovery.json"
