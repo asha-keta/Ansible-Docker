@@ -191,5 +191,5 @@
 - name: Store the output to influxdb
   become: yes
   become_method: sudo
-  shell: python3 ../scripts/python/insert_files_influxdb.py ../reports/linux_server_discovery.json"
+  shell: python3 ../scripts/python/insert_files_influxdb.py ../reports/linux_server_discovery.json
   
