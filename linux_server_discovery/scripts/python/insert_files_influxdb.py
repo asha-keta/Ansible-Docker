@@ -5,21 +5,14 @@ import json
 import sys
 
 client = InfluxDBClient(host='13.90.149.147', port=8086, username='grafana', password='grafana@123')
-client.create_database('pyexample1')
-client.get_list_database()
+#client.create_database('pyexample1')
+#client.get_list_database()
 client.switch_database('pyexample1')
-
-
-#data = pd.read_html("test.html")
-#for dt in data:
-#    dt.to_json("test.json")
-
 fileName = sys.argv[1]
-
-
 with open(fileName) as f:
      d=json.load(f)
-d= json.dumps(d)
+#d= json.dumps(d)
+d=d.replace("'",""")
 print("################################################################################")
 print(type(d))
 print(d)
