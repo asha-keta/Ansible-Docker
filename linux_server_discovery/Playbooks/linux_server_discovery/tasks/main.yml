@@ -116,18 +116,6 @@
   register: ser_out
 - debug: var=ser_out
   when: conn_out is success
- 
-- name: get grub info
-  shell: cat /etc/default/grub
-  register: grub_out
-- debug: var=grub_out
-  when: conn_out is success
- 
-- name: get boot info
-  shell: ls -l /boot|grep -v total
-  register: boot_out
-- debug: var=boot_out
-  when: conn_out is success
 
 - name: get active user info
   shell: w | cut -d ' ' -f 1 | grep -v USER | sort -u
