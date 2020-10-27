@@ -12,7 +12,8 @@ fileName = sys.argv[1]
 with open(fileName) as f:
      d=f.read()
 #d= json.dumps(d)
-#d=d.replace("'",""")
+d=d.replace("'",'"')
+d=json.dumps(d)
 print("################################################################################")
 print(type(d))
 print(d)
