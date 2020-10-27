@@ -14,6 +14,7 @@ with open(fileName) as f:
 #d= json.dumps(d)
 d=d.replace("'",'"')
 d=json.dumps(d)
+d = ast.literal_eval(d)
 print("################################################################################")
 print(type(d))
 print(d)
