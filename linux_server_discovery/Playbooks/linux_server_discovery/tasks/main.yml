@@ -61,24 +61,6 @@
 - debug: var=mem_out
   when: conn_out is success
    
-- name: Ifconfig output
-  command: /usr/sbin/ifconfig -a
-  register: if_out
-- debug: var=if_out
-  when: conn_out is success
- 
-- name: route output
-  command: /usr/sbin/route -n
-  register: route_out
-- debug: var=route_out
-  when: route_out is success
- 
-- name: get mount point info
-  shell: cat /etc/fstab|grep -v "#"
-  register: fstab_out
-- debug: var=fstab_out
-  when: conn_out is success
- 
 - name: get mount point type
   shell: df -Th | grep "^/dev"
   register: type_out
@@ -153,15 +135,6 @@
 - debug: var=user_out
   when: conn_out is success
  
-- name: Transfer executable script script
-  copy: src=../scripts/shell/server.sh dest=/tmp/server.sh mode=0777
-
-- name: Execute the script
-  command: sh /tmp/server.sh
-  register: server_out
-- debug: var=server_out
-  when: conn_out is success
-  
 - name: get rpm package installed
   shell: rpm -qa --last
   register: rpm_out
@@ -174,15 +147,6 @@
 - debug: var=rpmall_out
   when: conn_out is success
  
-- name: transfer oracle db instances info script 
-  copy: src=../scripts/shell/oracle.sh dest=/tmp/oracle.sh mode=0777
-
-- name: Execute the oracle script
-  command: sh /tmp/oracle.sh
-  register: sh_out
-- debug: var=sh_out
-  when: conn_out is success
-  
 - name: template conversion
   template:
     src: jsontemp.j2
