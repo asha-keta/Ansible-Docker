@@ -9,6 +9,8 @@ pipeline {
         }
         stage('Trigger playbook') {
             steps {
+                 sh "echo $Playbook_Name"
+                 sh "echo $Playbook_Name1"
                  sh "docker exec trusting_lovelace sh -c 'ansible-playbook /ansible_playbooks/workspace/Sonar_Scanner/linux_server_discovery/Playbooks/linux_discovery.yml'"
     }
         }
