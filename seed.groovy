@@ -5,7 +5,8 @@ pipelineJob('Ansible_DSL_Demo') {
     definition {
         cpsScm {
           scm {
-            git(repo, 'master', { node -> node / 'extensions: [[$class: 'SparseCheckoutPaths',  sparseCheckoutPaths:[[$class:'SparseCheckoutPath', path:'linux_server_discovery/']]]' } )
+		  git(repo, 'master'}
+		//, { node -> node / 'extensions: [[$class: 'SparseCheckoutPaths',  sparseCheckoutPaths:[[$class:'SparseCheckoutPath', path:'linux_server_discovery/']]]' } )
               configure { git ->
                 git / 'extensions' / 'hudson.plugins.git.extensions.impl.SparseCheckoutPaths' / 'sparseCheckoutPaths' {
                     ['linux_server_discovery'].each { mypath ->
