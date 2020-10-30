@@ -1,4 +1,4 @@
-pipelineJob('DSL_Demo') {
+pipelineJob('Ansible_DSL_Demo') {
 
     def repo = 'https://github.com/asha-keta/Ansible-Docker.git'
    
