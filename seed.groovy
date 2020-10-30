@@ -1,9 +1,10 @@
 pipelineJob('Ansible_DSL_Demo')     
-    definition {
+    
     parameters {
         stringParam('Playbook_Name', 'linux_server_discovery', 'Playbook to trigger')
         stringParam('Playbook_Name1', 'linux_server_discovery1', 'Playbook to trigger1')
     }
+    definition {
         cps {
          script(readFileFromWorkspace('linux_server_discovery/Pipeline/Jenkinsfile'))
         }
