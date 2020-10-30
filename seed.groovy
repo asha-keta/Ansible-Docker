@@ -1,4 +1,4 @@
-pipelineJob('Ansible_DSL_Demo')     
+pipelineJob('Ansible_DSL_Demo')   {  
     
     parameters {
         stringParam('Playbook_Name', 'linux_server_discovery', 'Playbook to trigger')
@@ -9,6 +9,7 @@ pipelineJob('Ansible_DSL_Demo')
          script(readFileFromWorkspace('linux_server_discovery/Pipeline/Jenkinsfile'))
         }
     }
+}
 
 
 pipelineJob('Ansible_DSL_Demo1') {
