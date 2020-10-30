@@ -1,10 +1,6 @@
 pipelineJob('Ansible_DSL_Demo') {
 
-    def repo = 'https://github.com/asha-keta/Ansible-Docker.git'
-   
-    triggers {
-        scm('*/15 * * * *')
-    }
+    def repo = 'https://github.com/asha-keta/Ansible-Docker.git
     
     definition {
         cpsScm {
@@ -28,11 +24,11 @@ pipelineJob('Ansible_DSL_Demo') {
 pipelineJob('Ansible_DSL_Demo1') {
 
     def repo = 'https://github.com/asha-keta/Ansible-Docker.git'
-   
-    triggers {
-        scm('*/15 * * * *')
+    parameters {
+        stringParam('Playbook_Name', 'linux_server_discovery', 'Playbook to trigger')
+        stringParam('Playbook_Name1', 'linux_server_discovery1', 'Playbook to trigger1')
     }
-    
+     
     definition {
         cpsScm {
           scm {
