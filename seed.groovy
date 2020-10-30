@@ -3,21 +3,8 @@ pipelineJob('Ansible_DSL_Demo') {
     def repo = 'https://github.com/asha-keta/Ansible-Docker.git'
     
     definition {
-        cpsScm {
-          scm {
-		  git(repo, 'master')
-		//, { node -> node / 'extensions: [[$class: 'SparseCheckoutPaths',  sparseCheckoutPaths:[[$class:'SparseCheckoutPath', path:'linux_server_discovery/']]]' } )
-              configure { git ->
-                git / 'extensions' / 'hudson.plugins.git.extensions.impl.SparseCheckoutPaths' / 'sparseCheckoutPaths' {
-                    ['linux_server_discovery'].each { mypath ->
-                        'hudson.plugins.git.extensions.impl.SparseCheckoutPath' {
-                            path("${mypath}")
-                }
-            }
-        }
-	}
-            }
-            scriptPath('linux_server_discovery/Pipeline/Jenkinsfile')
+        cps {
+         script(readFileFromWorkspace('linux_server_discovery/Pipeline/Jenkinsfile'))
         }
     }
 }
