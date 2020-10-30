@@ -11,7 +11,7 @@ pipelineJob('Ansible_DSL_Demo') {
           scm {
             git(repo, 'master', { node -> node / 'extensions' << '' } )
             }
-            scriptPath('my-location/Jenkinsfile')
+            scriptPath('linux_server_discovery/Pipeline/Jenkinsfile')
         }
     }
 }
