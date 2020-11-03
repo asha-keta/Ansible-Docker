@@ -1,0 +1,131 @@
+version: "3"
+services:
+  grafana:
+    image: ashaketa1144/grafana:3.0
+    container_name: grafana
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - idop_network
+    volumes:
+      - grafana-config-volume:/usr/share/grafana
+      - grafana-data-volume:/var/lib/grafana
+  influxdb:
+    image: ashaketa1144/influxdb:2.0
+    container_name: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    networks:
+      - idop_network
+    volumes:
+      - influxdb-volume:/var/lib/influxdb
+      - ./influxdb.conf:/etc/influxdb/influxdb.conf
+  jenkins:
+    container_name: jenkins
+    entrypoint:
+      - /sbin/tini
+      - --
+      - /usr/local/bin/jenkins.sh
+    environment:
+      - PATH=/usr/local/openjdk-8/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - LANG=C.UTF-8
+      - JAVA_HOME=/usr/local/openjdk-8
+      - JAVA_VERSION=8u242
+      - JAVA_BASE_URL=https://github.com/AdoptOpenJDK/openjdk8-upstream-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jdk_
+      - JAVA_URL_VERSION=8u242b08
+      - JENKINS_HOME=/var/jenkins_home
+      - JENKINS_SLAVE_AGENT_PORT=50000
+      - REF=/usr/share/jenkins/ref
+      - JENKINS_VERSION=2.249.2
+      - JENKINS_UC=https://updates.jenkins.io
+      - JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental
+      - JENKINS_INCREMENTALS_REPO_MIRROR=https://repo.jenkins-ci.org/incrementals
+      - COPY_REFERENCE_FILE_LOG=/var/jenkins_home/copy_reference_file.log
+    hostname: jenkins
+    image: ashaketa1144/jenkins:2.0
+    ipc: private
+    logging:
+      driver: json-file
+      options: {}
+    networks:
+      - idop_network
+    ports:
+      - 8080:8080/tcp
+    stdin_open: true
+    tty: true
+    user: jenkins
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /var/lib/docker/volumes/jenkins_workspace/_data:/var/jenkins_home/
+  sonarqube:
+    command:
+      - bin/sonar.sh
+    container_name: sonarqube
+    entrypoint:
+      - bin/run.sh
+    environment:
+      - PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - JAVA_VERSION=jdk-11.0.8+10
+      - LANG=en_US.UTF-8
+      - LANGUAGE=en_US:en
+      - LC_ALL=en_US.UTF-8
+      - JAVA_HOME=/opt/java/openjdk
+      - SONARQUBE_HOME=/opt/sonarqube
+      - SONAR_VERSION=8.5.0.37579
+      - SQ_DATA_DIR=/opt/sonarqube/data
+      - SQ_EXTENSIONS_DIR=/opt/sonarqube/extensions
+      - SQ_LOGS_DIR=/opt/sonarqube/logs
+      - SQ_TEMP_DIR=/opt/sonarqube/temp
+    hostname: sonarqube
+    image: ashaketa1144/sonar:2.0
+    ipc: private
+    logging:
+      driver: json-file
+      options: {}
+    networks:
+      - idop_network
+    ports:
+      - 9000:9000/tcp
+    working_dir: /opt/sonarqube
+  ansible:
+    command:
+      - /bin/bash
+    container_name: ansible
+    environment:
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    hostname: ansible
+    image: ashaketa1144/ansible:2.0
+    ipc: private
+    logging:
+      driver: json-file
+      options: {}
+    networks:
+      - idop_network
+    stdin_open: true
+    tty: true
+    volumes:
+      - /var/lib/docker/volumes/jenkins_workspace/_data:/ansible_playbooks
+  rundeck:
+    image:  rundeck/rundeck:3.3.5
+    container_name: rundeck
+    restart: always
+    ports:
+      - 4440:4440
+    networks:
+      - idop_network
+networks:
+  idop_network:
+    external: true
+
+volumes:
+  grafana-config-volume:
+    external: true
+  grafana-data-volume:
+    external: true
+  influxdb-volume:
+    external: true
+  jenkins_workspace:
+    external: true
